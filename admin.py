@@ -1,4 +1,5 @@
 import socket
+import json
 
 host = '0.0.0.0'
 port = 5000
@@ -6,24 +7,26 @@ size = 1024
 message = ''
 
 client = {
-    'username': 'time_bitch',
+    'username': 'Admin',
     'host': '0.0.0.0',
     'port': '5000',
     'message': '',
-    'to': ''
+    'to': 'Server'
 }
 
 while message != 'quit':
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    CommandList = "1. Users in network"
+    print(CommandList)
 
-    client['to'] = input("Enter username: ")
-    client['message'] = input("Enter message: ")
+    client['message'] = input("Enter number command: ")
 
     s.connect((host,port)) 
     s.send(str(client).encode())
     data = s.recv(size)
-    array = (data.decode())
-    print(array)
-
-print('Quit')
+    Info = (data.decode()).replace("'", '"')
+    #print(Info)
+    info = json.loads(Info)
+    s.close()
+    print(info)
